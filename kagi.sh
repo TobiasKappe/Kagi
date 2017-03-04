@@ -76,25 +76,13 @@ if [ -z ${KAGI_GPG_KEY} ]; then
     exit 1
 fi
 
-if [ -z ${KAGI_PWGEN_FLAGS+x} ]; then
-    KAGI_PWGEN_FLAGS="-nys 32"
-fi
+# Careful: the first dash is bash syntax
+KAGI_PWGEN_FLAGS="${KAGI_PWGEN_FLAGS:--nys 32}"
+KAGI_XCLIP_FLAGS="${KAGI_XCLIP_FLAGS:--selection clipboard}"
+KAGI_SCRUB_TIMEOUT="${KAGI_SCRUB_TIMEOUT:-5}"
 
-if [ -z ${KAGI_XCLIP_FLAGS+x} ]; then
-    KAGI_XCLIP_FLAGS="-selection clipboard"
-fi
-
-if [ -z ${XDG_DATA_HOME+x} ]; then
-    XDG_DATA_HOME="${HOME}/.local/share"
-fi
-
-if [ -z ${KAGI_BASEDIR+x} ]; then
-    KAGI_BASEDIR="${XDG_DATA_HOME}/kagi"
-fi
-
-if [ -z ${KAGI_SCRUB_TIMEOUT+x} ]; then
-    KAGI_SCRUB_TIMEOUT=5
-fi
+XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+KAGI_BASEDIR="${XDG_DATA_HOME}/kagi"
 
 if [ ! -d "$KAGI_BASEDIR" ]; then
     mkdir "$KAGI_BASEDIR"
