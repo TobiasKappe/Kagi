@@ -4,7 +4,7 @@ Kagi is a password manager written in Bash. Its features include (and are limite
 
 * Generating random passwords using [pwgen](https://sourceforge.net/projects/pwgen/)
 * Storing encrypted passwords on-disk using [GnuPG](https://www.gnupg.org/)
-* Decrypting passwords into your X clipboard using [xclip](https://github.com/astrand/xclip)
+* Temporarily decrypting passwords into your X clipboard using [xclip](https://github.com/astrand/xclip)
 * Barebones GUI interface using [Zenity](https://help.gnome.org/users/zenity/stable/)
 
 ## Dependencies

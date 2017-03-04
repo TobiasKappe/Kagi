@@ -31,7 +31,7 @@ check-exists() {
 check-overwrite() {
     if check-exists "$1"; then
         prompt-confirm "Key exists. Overwrite?"
-    else    
+    else
         true
     fi
 }
@@ -63,7 +63,12 @@ gpg-decrypt() {
 }
 
 to-clipboard() {
+    local OLDCONTENT=$(xclip -o $KAGI_XCLIP_FLAGS)
     xclip $KAGI_XCLIP_FLAGS
+    (
+        sleep $KAGI_SCRUB_TIMEOUT;
+        echo -n "$OLDCONTENT" | xclip $KAGI_XCLIP_FLAGS
+    ) &
 }
 
 if [ -z ${KAGI_GPG_KEY} ]; then
@@ -85,6 +90,10 @@ fi
 
 if [ -z ${KAGI_BASEDIR+x} ]; then
     KAGI_BASEDIR="${XDG_DATA_HOME}/kagi"
+fi
+
+if [ -z ${KAGI_SCRUB_TIMEOUT+x} ]; then
+    KAGI_SCRUB_TIMEOUT=5
 fi
 
 if [ ! -d "$KAGI_BASEDIR" ]; then
