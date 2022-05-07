@@ -4,6 +4,7 @@ Kagi is a password manager written in Bash. Its features include (and are limite
 
 * Generating random passwords using [pwgen](https://sourceforge.net/projects/pwgen/)
 * Storing encrypted passwords on-disk using [GnuPG](https://www.gnupg.org/)
+* Generating timed one-time passwords using [oauthtool](https://www.nongnu.org/oath-toolkit/oathtool.1.html)
 * Temporarily decrypting passwords into your X clipboard using [xclip](https://github.com/astrand/xclip)
 * Barebones GUI interface using [Zenity](https://help.gnome.org/users/zenity/stable/)
 
@@ -16,9 +17,11 @@ First, make sure you have GPG key available (you may want to use a subkey of you
     export KAGI_GPG_KEY="your@key.id"
 
 ## Usage
-To generate a new password, invoke `./kagi.sh write` and provide a short alphanumeric ID for the key.
 
-To read a stored password, run `./kagi.sh read` and provide the short key ID.
+* To generate a new password, invoke `./kagi.sh write` and provide a short alphanumeric ID for the key.
+* To read a stored password, run `./kagi.sh read` and provide the short key ID.
+* To store a TOTP secret, run `./kagi totp-write` and prove the short key ID and TOTP secret.
+* To generate a TOTP code, run `./kagi totp-read` and provide the short key ID.
 
 ## Storage
 Encrypted passwords are stored in `$XDG_DATA_DIR/kagi`. If this variable is not set, storage defaults to `$HOME/.local/share/kagi`.

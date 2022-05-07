@@ -50,6 +50,17 @@ get-key-id() {
     fi
 }
 
+get-totp-secret() {
+    local TOTP_SECRET=$(prompt-text "TOTP secret")
+
+    if [ -z "$TOTP_SECRET" ]; then
+        prompt-error "No secret given."
+        false
+    else
+        echo "$TOTP_SECRET"
+    fi
+}
+
 generate-key() {
     pwgen $KAGI_PWGEN_FLAGS -N 1
 }
@@ -105,6 +116,24 @@ read)
         gpg-decrypt < "$KEY_PATH" | to-clipboard
     else
         prompt-error "Unknown key"
+    fi
+    ;;
+totp-read)
+    KEY_ID=$(get-key-id) || exit 1
+
+    if check-exists "$KEY_ID.totp"; then
+        KEY_PATH=$(get-key-path "$KEY_ID.totp")
+        gpg-decrypt < "$KEY_PATH" | oathtool -b --totp - | to-clipboard
+    else
+        prompt-error "Unknown TOTP key"
+    fi
+    ;;
+totp-write)
+    KEY_ID=$(get-key-id) || exit 1
+
+    if check-overwrite "$KEY_ID.totp"; then
+        KEY_PATH=$(get-key-path "$KEY_ID.totp")
+        get-totp-secret | gpg-encrypt > "$KEY_PATH"
     fi
     ;;
 esac
